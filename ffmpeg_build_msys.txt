@@ -1,0 +1,13 @@
+- Install MSYS2
+- Open console with mingw64.exe
+- Execute commands to install packages, download ffmpeg source and build
+
+pacman -S make diffutils yasm mingw-w64-x86_64-gcc mingw-w64-x86_64-SDL2 git
+git clone https://github.com/FFmpeg/FFmpeg ffmpeg
+cd ffmpeg
+./configure
+make -j`nproc`
+
+- In the ffmpeg folder there should be exe files for ffmpeg, ffprobe and ffplay, in debug mode (with _g) and minimized
+- To use the binaries from Windows, copy them to a folder and copy required DLLs from the /ming64/bin folder, or set PATH to point that folder
+- If runtime error dialog is shown, empty PATH, set it to ., to execute the binaries in isolated env

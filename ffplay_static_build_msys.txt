@@ -1,0 +1,12 @@
+- To compile and build ffplay.c manually first build ffmpeg from source with SDL2
+- Execute commands from the ffmpeg folder
+(the commands can be extracted running "make --dry-run" for the ffmpeg source)
+
+x86_64-w64-mingw32-gcc -I. -I/mingw64/include/SDL2 -std=c11 -g -O3 -c -o fftools/ffplay.o fftools/ffplay.c
+
+x86_64-w64-mingw32-gcc -Llibavcodec -Llibavdevice -Llibavfilter -Llibavformat -Llibavutil -Llibpostproc -Llibswscale -Llibswresample -L/mingw64/lib fftools/cmdutils.o fftools/opt_common.o fftools/ffplay.o fftools/fftoolsres.o -lavdevice -lavfilter -lavformat -lavcodec -lswresample -lswscale -lavutil -lpsapi -lole32 -lstrmiids -luuid -loleaut32 -lshlwapi -lgdi32 -lm -latomic -lvfw32 -lmingw32 -lSDL2main -lSDL2 -lz -lsecur32 -lws2_32 -liconv -lmfuuid -luser32 -lbcrypt -lshell32 -o ffplay_g.exe
+
+strip -o ffplay.exe ffplay_g.exe
+
+
+To use the binaries outside MSYS2 console, the required DLLs have to be copied to the same folder with the binaries or they have to be on the PATH

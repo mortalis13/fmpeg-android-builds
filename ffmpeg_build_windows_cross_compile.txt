@@ -1,0 +1,36 @@
+- Download and prepare SDL2 for ffplay
+
+wget https://github.com/libsdl-org/SDL/releases/download/release-2.28.3/SDL2-devel-2.28.3-mingw.tar.gz
+tar -xf SDL2-devel-2.28.3-mingw.tar.gz
+mkdir -p /opt/local
+cp -r SDL2-2.28.3/x86_64-w64-mingw32 /opt/local/SDL2
+cp /opt/local/SDL2/bin/sdl2-config /opt/local/SDL2/bin/x86_64-w64-mingw32-sdl2-config
+PATH=$PATH:/opt/local/SDL2/bin/
+
+- Install packages from the ffmpeg compilation guide
+- Execute commands
+
+apt install mingw-w64
+
+git clone https://github.com/FFmpeg/FFmpeg ffmpeg
+cd ffmpeg
+./configure --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --arch=x86_64 --target-os=mingw32 --prefix=/root/ffmpeg_build
+make -j`nproc`
+make install
+
+- The binaries, includes and libs will be in /root/ffmpeg_build/
+
+- Copy SDL2.dll to the folder with binaries, it's needed to execute them
+cp /opt/local/SDL2/bin/SDL2.dll /root/ffmpeg_build/bin/
+
+- Copy the build to Windows, for example with
+scp -r root@ip:/root/ffmpeg_build .
+
+
+=== For static build use configuration
+./configure --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile --arch=x86_64 --target-os=mingw32 --prefix=/root/ffmpeg_build --enable-static --enable-gpl
+
+
+=== If SDL2 errors occur on configuration check ffbuild/config.log
+------ Can be related to pkg-config => check the command executes and sdl2.pc is in the search path, use original pkg-config rather than mingw-pkg-config
+------ If the test files don't compile because of include errors, check the include path points to the downloaded SDL2 package
